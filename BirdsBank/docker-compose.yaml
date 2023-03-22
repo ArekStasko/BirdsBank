@@ -1,0 +1,24 @@
+version: '3.8'
+services: 
+  sqlserver:
+    container_name: sqlserver
+    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password1234!"
+    ports:
+      - "1433:1433"
+  birdsbank:
+    build: "./"
+    container_name: birds_bank
+    environment:
+      DatabaseServer: "sqlserver"
+      DatabasePort: "1433"
+      DatabaseUser: "sa"
+      DatabasePassword: "Password1234!"
+      DatabaseName: "BirdsBank"
+    ports:
+      - "8080:80"
+    depends_on: 
+      - sqlserver
+    
